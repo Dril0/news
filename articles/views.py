@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     UserPassesTestMixin,
 )  # restringe el acceso a views para los user NO logueados, nos exige loguearnos primero para tener acceso, Userpasses.. restringe el acceso para realizar cambios solo al author del articulo.
+from .forms import CommentForm
 
 # Create your views here.
 
@@ -38,6 +39,11 @@ class ArticleListView(LoginRequiredMixin, ListView):
 class ArticleDetailView(LoginRequiredMixin, DetailView):
     model = Article
     template_name = "article_detail.html"
+    
+    def get_context_data(self, **kwargs):#actualiza el context(un diccionario quecontiente todas los nombres de variables y valores del template)
+        context = super().get_context_data(**kwargs)
+        context["form"] = CommentForm()
+        return context
 
 
 class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
