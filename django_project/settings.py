@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config #primero instalar decouple(pip install python-decouple)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-v4*d&b*1h!oc)7k#o7rat9=54irxyi2^5y#)%o*22$rm974h%t"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 3rd party Apps      #agregamos 2 nuevas app.
+    "crispy_forms",
+    "crispy_bootstrap5",
+    # Local Apps
     "accounts.apps.AccountsConfig",  # agregamos la nueva app.
+    "pages.apps.PagesConfig",  # agregamos la nueva app pages.
+    "articles.apps.ArticlesConfig",  # agregamos articles app.
 ]
 
 MIDDLEWARE = [
@@ -129,3 +136,20 @@ AUTH_USER_MODEL = "accounts.CustomUser"  # Le decimos a django que utilize nuest
 LOGIN_REDIRECT_URL = "home"
 # indicamos donde redirigir cuando hacemos login y logout.
 LOGOUT_REDIRECT_URL = "home"
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = config("EMAIL_PORT")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS")
+
+
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # manda mail a la consola para resetear pass.
